@@ -9,11 +9,9 @@ Uma coleção de ferramentas web para análise de rede e informações técnicas
 - 🔎 DNS Lookup  
   Consulta registros DNS (A, etc) de qualquer domínio  
 
-- 🌍 IP Tracker *(em desenvolvimento)*  
+- 🌍 IP Tracker 
   Identifica informações de IP (localização, país, etc)
 
-- 📋 Copy to Clipboard  
-  Copie resultados rapidamente com um clique  
 
 ---
 
