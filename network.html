@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network — DevTool</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { mono: ['JetBrains Mono','monospace'], display: ['Syne','sans-serif'] },
+        colors: { bg:'#0a0e13', surface:'#111720', bdr:'#1e2a38', accent:'#00e5a0', blue:'#0099ff', muted:'#4a6070', danger:'#ff4d6a', body:'#c8d8e8' },
+      }
+    }
+  }
+</script>
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-bg text-body font-mono min-h-screen overflow-x-hidden">
+<canvas id="matrix-bg"></canvas>
+<div id="toast" class="toast"></div>
+
+<div class="relative z-10 max-w-4xl mx-auto px-5 py-10 pb-24">
+
+  <header class="mb-8 anim-down">
+    <a href="index.html" class="text-muted text-[10px] tracking-widest hover:text-accent transition-colors">← back</a>
+    <h1 class="font-display font-extrabold text-5xl leading-none text-white tracking-tight mt-2">Net<span class="text-accent">work</span></h1>
+    <p class="mt-2 text-[11px] text-muted tracking-widest">→ http · url · ip · dns</p>
+  </header>
+
+  <!-- HTTP Request -->
+  <section class="bg-surface border border-bdr rounded p-5 mb-5 anim-up">
+    <h2 class="text-[11px] tracking-widest text-accent mb-4">// HTTP REQUEST</h2>
+    <div class="flex gap-2 mb-3">
+      <select id="http-method" class="bg-bg border border-bdr text-[11px] px-2 py-1.5 rounded-sm w-24 focus:outline-none focus:border-accent cursor-pointer">
+        <option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option>
+      </select>
+      <input id="http-url" type="text" placeholder="https://api.example.com/endpoint"
+        class="flex-1 bg-bg border border-bdr text-[12px] px-3 py-1.5 rounded-sm focus:outline-none focus:border-accent placeholder:text-muted">
+      <button onclick="sendRequest()" class="bg-accent text-bg text-[11px] tracking-widest px-4 py-1.5 rounded-sm hover:opacity-80 transition-opacity font-bold">SEND</button>
+    </div>
+    <div class="mb-3">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[10px] text-muted tracking-widest">HEADERS</span>
+        <button onclick="addHeader()" class="text-[10px] text-muted hover:text-accent transition-colors">+ add</button>
+      </div>
+      <div id="headers-list" class="space-y-1.5"></div>
+    </div>
+    <div id="body-section" class="mb-3 hidden">
+      <span class="text-[10px] text-muted tracking-widest block mb-2">BODY</span>
+      <textarea id="http-body" class="w-full bg-bg border border-bdr text-[12px] px-3 py-2 rounded-sm focus:outline-none focus:border-accent placeholder:text-muted" rows="4" placeholder='{"key": "value"}'></textarea>
+    </div>
+    <div id="http-loading" class="loading-bar mb-3 rounded"></div>
+    <div id="http-response" class="hidden">
+      <div class="flex items-center gap-3 mb-2">
+        <span id="http-status" class="text-[11px] px-2 py-0.5 rounded-sm font-bold"></span>
+        <span id="http-time" class="text-[10px] text-muted"></span>
+        <span id="http-size" class="text-[10px] text-muted"></span>
+        <button onclick="copyEl('http-body-out')" class="ml-auto text-[10px] text-muted hover:text-accent transition-colors">copy</button>
+      </div>
+      <pre id="http-body-out" class="bg-bg border border-bdr rounded-sm p-3 text-[11px] max-h-80 overflow-auto"></pre>
+    </div>
+  </section>
+
+  <!-- URL Encoder -->
+  <section class="bg-surface border border-bdr rounded p-5 mb-5 anim-up">
+    <h2 class="text-[11px] tracking-widest text-blue mb-4">// URL ENCODE / DECODE</h2>
+    <textarea id="url-input" rows="3" placeholder="cole sua URL ou texto aqui..."
+      class="w-full bg-bg border border-bdr text-[12px] px-3 py-2 rounded-sm focus:outline-none focus:border-blue placeholder:text-muted mb-2 resize-none"></textarea>
+    <div class="flex gap-2 mb-3">
+      <button onclick="urlEncode()" class="border border-bdr text-[10px] tracking-widest px-3 py-1.5 rounded-sm hover:border-blue hover:text-blue transition-all">ENCODE</button>
+      <button onclick="urlDecode()" class="border border-bdr text-[10px] tracking-widest px-3 py-1.5 rounded-sm hover:border-blue hover:text-blue transition-all">DECODE</button>
+      <button onclick="copyEl('url-output')" class="ml-auto text-[10px] text-muted hover:text-accent transition-colors">copy</button>
+    </div>
+    <textarea id="url-output" rows="3" readonly placeholder="resultado..."
+      class="w-full bg-bg border border-bdr text-[12px] px-3 py-2 rounded-sm focus:outline-none placeholder:text-muted text-accent resize-none"></textarea>
+  </section>
+
+  <!-- Rastreador de IP -->
+  <section class="bg-surface border border-bdr rounded p-4 mb-5 anim-up">
+    <h2 class="text-[11px] tracking-widest text-accent mb-4">// Rastreador de IP</h2>
+    <div class="flex flex-col gap-2">
+      <div id="ip" class="hidden"></div>
+      <div class="flex gap-2 mb-4">
+        <input id="ip-input" type="text" placeholder="endereço IP (vazio = seu IP)"
+          class="flex-1 bg-bg border border-bdr text-[12px] px-3 py-1.5 rounded-sm focus:outline-none focus:border-accent placeholder:text-muted">
+        <button onclick="ipLookup()" class="border border-accent text-accent text-[11px] tracking-widest px-4 py-1.5 rounded-sm hover:bg-accent hover:text-bg transition-all">RASTREAR</button>
+      </div>
+      <div id="ip-result" class="hidden"></div>
+
+    </div>
+  </section>
+
+  <!-- DNS Lookup -->
+  <section class="bg-surface border border-bdr rounded p-5 anim-up">
+    <h2 class="text-[11px] tracking-widest text-blue mb-4">// DNS LOOKUP</h2>
+    <div class="flex gap-2 mb-4">
+      <input id="dns-domain" type="text" placeholder="domínio (ex: google.com)"
+        class="flex-1 bg-bg border border-bdr text-[12px] px-3 py-1.5 rounded-sm focus:outline-none focus:border-blue placeholder:text-muted">
+      <select id="dns-type" class="bg-bg border border-bdr text-[11px] px-2 py-1.5 rounded-sm focus:outline-none focus:border-blue cursor-pointer">
+        <option>A</option><option>AAAA</option><option>MX</option><option>TXT</option><option>CNAME</option><option>NS</option>
+      </select>
+      <button onclick="dnsLookup()" class="border border-blue text-blue text-[11px] tracking-widest px-4 py-1.5 rounded-sm hover:bg-blue hover:text-bg transition-all">QUERY</button>
+    </div>
+    <div id="dns-result" class="hidden space-y-1"></div>
+  </section>
+
+</div>
+<script src="./js/network.js"></script>
+<script>lucide.createIcons()</script>
+
+</body>
+</html>

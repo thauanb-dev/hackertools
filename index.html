@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevTool</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { mono: ['JetBrains Mono','monospace'], display: ['Syne','sans-serif'] },
+        colors: { bg:'#0a0e13', surface:'#111720', bdr:'#1e2a38', accent:'#00e5a0', blue:'#0099ff', muted:'#4a6070', danger:'#ff4d6a', body:'#c8d8e8' },
+      }
+    }
+  }
+</script>
+
+</head>
+<body class="bg-bg text-body font-mono min-h-screen overflow-x-hidden">
+<canvas id="matrix-bg"></canvas>
+<div id="toast" class="toast"></div>
+
+<div class="relative z-10 max-w-4xl mx-auto px-5 py-10 pb-24">
+
+  <!-- Header -->
+  <header class="mb-8 anim-down">
+    <h1 class="font-display font-extrabold text-5xl leading-none text-white tracking-tight">Dev <span class="text-accent">Tool</span></h1>
+    <p class="mt-2 text-[11px] text-muted tracking-widest">→ ferramentas para Programadores</p>
+  </header>
+
+  <!-- Categorias -->
+  <div class="flex flex-wrap items-center gap-2 mb-4 anim-up">
+    <a href="network.html" class="border border-bdr text-muted text-[10px] tracking-widest px-3 py-1 rounded-sm hover:border-blue hover:text-blue transition-all">Network</a>
+    <a href="crypto.html"  class="border border-bdr text-muted text-[10px] tracking-widest px-3 py-1 rounded-sm hover:border-blue hover:text-blue transition-all">Crypto</a>
+    <a href="dev.html"     class="border border-bdr text-muted text-[10px] tracking-widest px-3 py-1 rounded-sm hover:border-blue hover:text-blue transition-all">Dev</a>
+  </div>
+
+</div>
+<script src="./js/index.js"></script>
+</body>
+</html>

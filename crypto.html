@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crypto — DevTool</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { mono: ['JetBrains Mono','monospace'], display: ['Syne','sans-serif'] },
+        colors: { bg:'#0a0e13', surface:'#111720', bdr:'#1e2a38', accent:'#00e5a0', blue:'#0099ff', muted:'#4a6070', danger:'#ff4d6a', body:'#c8d8e8' },
+      }
+    }
+  }
+</script>
+</head>
+<body class="bg-bg text-body font-mono min-h-screen overflow-x-hidden">
+<canvas id="matrix-bg"></canvas>
+<div id="toast" class="toast"></div>
+
+<div class="relative z-10 max-w-4xl mx-auto px-5 py-10 pb-24">
+
+  <header class="mb-8 anim-down">
+    <a href="index.html" class="text-muted text-[10px] tracking-widest hover:text-accent transition-colors">← back</a>
+    <h1 class="font-display font-extrabold text-5xl leading-none text-white tracking-tight mt-2">Cry<span class="text-accent">pto</span></h1>
+    <p class="mt-2 text-[11px] text-muted tracking-widest">→ base64 · hash · jwt</p>
+  </header>
+
+  <!-- Base64 -->
+  <section class="bg-surface border border-bdr rounded p-5 mb-5 anim-up">
+    <h2 class="text-[11px] tracking-widest text-accent mb-4">// BASE64</h2>
+    <textarea id="b64-input" rows="4" placeholder="texto ou base64..."
+      class="w-full bg-bg border border-bdr text-[12px] px-3 py-2 rounded-sm focus:outline-none focus:border-accent placeholder:text-muted mb-2 resize-none"></textarea>
+    <div class="flex gap-2 mb-3">
+      <button onclick="b64Encode()" class="border border-bdr text-[10px] tracking-widest px-3 py-1.5 rounded-sm hover:border-accent hover:text-accent transition-all">ENCODE</button>
+      <button onclick="b64Decode()" class="border border-bdr text-[10px] tracking-widest px-3 py-1.5 rounded-sm hover:border-accent hover:text-accent transition-all">DECODE</button>
+      <button onclick="copyEl('b64-output')" class="ml-auto text-[10px] text-muted hover:text-accent transition-colors">copy</button>
+    </div>
+    <textarea id="b64-output" rows="4" readonly placeholder="resultado..."
+      class="w-full bg-bg border border-bdr text-[12px] px-3 py-2 rounded-sm placeholder:text-muted text-accent resize-none"></textarea>
+  </section>
+
+  <!-- Hash -->
+  <section class="bg-surface border border-bdr rounded p-5 mb-5 anim-up">
+    <h2 class="text-[11px] tracking-widest text-blue mb-4">// HASH GENERATOR</h2>
+    <textarea id="hash-input" rows="3" placeholder="texto para gerar hash..."
+      class="w-full bg-bg border border-bdr text-[12px] px-3 py-2 rounded-sm focus:outline-none focus:border-blue placeholder:text-muted mb-3 resize-none"></textarea>
+    <div class="flex gap-2 mb-4">
+      <button onclick="genHash('SHA-1')"   class="border border-bdr text-[10px] tracking-widest px-3 py-1.5 rounded-sm hover:border-blue hover:text-blue transition-all">SHA-1</button>
+      <button onclick="genHash('SHA-256')" class="border border-bdr text-[10px] tracking-widest px-3 py-1.5 rounded-sm hover:border-blue hover:text-blue transition-all">SHA-256</button>
+      <button onclick="genHash('SHA-512')" class="border border-bdr text-[10px] tracking-widest px-3 py-1.5 rounded-sm hover:border-blue hover:text-blue transition-all">SHA-512</button>
+    </div>
+    <div id="hash-results" class="space-y-2 hidden"></div>
+  </section>
+
+  <!-- JWT Decoder -->
+  <section class="bg-surface border border-bdr rounded p-5 anim-up">
+    <h2 class="text-[11px] tracking-widest text-accent mb-4">// JWT DECODER</h2>
+    <textarea id="jwt-input" rows="4" placeholder="cole seu JWT aqui..."
+      class="w-full bg-bg border border-bdr text-[12px] px-3 py-2 rounded-sm focus:outline-none focus:border-accent placeholder:text-muted mb-3 resize-none"></textarea>
+    <button onclick="decodeJWT()" class="border border-accent text-accent text-[10px] tracking-widest px-4 py-1.5 rounded-sm hover:bg-accent hover:text-bg transition-all mb-4">DECODE</button>
+    <div id="jwt-result" class="hidden space-y-3">
+      <div>
+        <div class="text-[9px] text-muted tracking-widest mb-1.5 flex items-center justify-between">
+          HEADER <button onclick="copyEl('jwt-header')" class="hover:text-accent transition-colors">copy</button>
+        </div>
+        <pre id="jwt-header" class="bg-bg border border-bdr rounded-sm p-3 text-[11px] text-blue overflow-auto"></pre>
+      </div>
+      <div>
+        <div class="text-[9px] text-muted tracking-widest mb-1.5 flex items-center justify-between">
+          PAYLOAD <button onclick="copyEl('jwt-payload')" class="hover:text-accent transition-colors">copy</button>
+        </div>
+        <pre id="jwt-payload" class="bg-bg border border-bdr rounded-sm p-3 text-[11px] text-accent overflow-auto"></pre>
+      </div>
+      <div id="jwt-exp-row" class="bg-bg border border-bdr rounded-sm px-3 py-2 text-[11px] hidden"></div>
+    </div>
+  </section>
+
+</div>
+<script src="./js/network.js"></script>
+</body>
+</html>
