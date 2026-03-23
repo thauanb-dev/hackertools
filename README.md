@@ -7,11 +7,16 @@ Uma coleção de ferramentas web para análise de rede e informações técnicas
 ## 🚀 Funcionalidades
 
 - 🔎 DNS Lookup  
-  Consulta registros DNS (A, etc) de qualquer domínio  
+  Consulta registros DNS (A, etc) de qualquer domínio
 
-- 🌍 IP Tracker 
+- 🌍 IP Tracker
   Identifica informações de IP (localização, país, etc)
 
+- Crypto
+  Ferramentas de Cripitografica
+  - Base64
+  - Hash SHA-1, SHA-256, SHA-512
+  - JWT Decoder
 
 ---
 
@@ -23,8 +28,8 @@ Interface inspirada em ferramentas de análise e pentest, com foco em simplicida
 
 ## ⚙️ Tecnologias
 
-- HTML  
-- CSS (Tailwind)  
+- HTML
+- CSS (Tailwind)
 - JavaScript (Vanilla)
 
 ---
@@ -32,5 +37,7 @@ Interface inspirada em ferramentas de análise e pentest, com foco em simplicida
 ## 📦 Como usar
 
 1. Clone o repositório:
+
 ```bash
 git clone https://github.com/seu-usuario/hackertools.git
+```
